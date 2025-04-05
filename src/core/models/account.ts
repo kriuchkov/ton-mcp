@@ -1,9 +1,8 @@
 export interface AccountInfo {
   address: string;
-  balance: string;
+  balance: {
+    coins: string;
+    currencies: Record<string, string>;
+  }
   status: string;
-}
-
-export interface TransactionResult {
-  message: string;
 }

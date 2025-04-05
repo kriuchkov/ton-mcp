@@ -5,6 +5,7 @@
       "name": "ton-mcp",
       "dependencies": {
         "@modelcontextprotocol/sdk": "^1.8.0",
+        "@ton/crypto": "^3.3.0",
         "@ton/ton": "^15.2.1",
         "tslog": "^4.9.3",
         "zod": "^3.24.2",

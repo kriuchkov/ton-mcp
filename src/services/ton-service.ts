@@ -12,4 +12,6 @@ export class TonService implements TonOperations {
   async getAccount(address: string): Promise<AccountInfo> {
     return this.tonPort.fetchAccount(address);
   }
+
+  
 }

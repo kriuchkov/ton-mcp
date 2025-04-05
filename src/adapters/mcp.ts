@@ -9,18 +9,16 @@ export class McpAdapter {
   private readonly tonOperations: TonOperations;
 
   constructor(tonOperations: TonOperations) {
-    this.server = new McpServer({
-      name: 'TON MCP Server (Bun)',
-      version: '0.1.0',
-      description: 'MCP-сервер для TON на Bun',
-    });
+    this.server = new McpServer({name: 'TON MCP Server', version: '0.1.0'});
     this.tonOperations = tonOperations;
   }
 
   setupResources(): void {
-    this.server.resource('account',
-      new ResourceTemplate('account://{address}', { list: undefined }),
+    this.server.resource('account', new ResourceTemplate('account://{address}', { list: undefined }),
       async (uri, { address }) => {
+        if (!address) {
+          throw new Error('Address is required');
+        }
         const account = await this.tonOperations.getAccount(address);
         return {
           contents: [
