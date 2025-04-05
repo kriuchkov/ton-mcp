@@ -1,0 +1,5 @@
+src/
+bun.lockb
+node_modules/
+*.log
+tsconfig.json

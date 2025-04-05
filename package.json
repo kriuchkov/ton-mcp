@@ -13,12 +13,22 @@
     "blockchain",
     "typescript"
   ],
+  "main": "./dist/index.js",
+  "bin": {
+    "ton-mcp": "./dist/index.js"
+  },
+  "repository": {
+
+    "type": "git",
+    "url": "https://github.com/kriuchkov/ton-mcp.git"
+  },
   "scripts": {
     "start": "bun run ./src/index.ts",
     "inspect": "bunx @modelcontextprotocol/inspector bun run start",
     "dev": "bun --watch index.ts",
     "build": "bun build ./src/index.ts --outdir ./dist && tsc",
-    "test": "bun test"
+    "test": "bun test",
+    "prepublishOnly": "bun run build"
   },
   "devDependencies": {
     "@types/bun": "latest"
@@ -31,5 +41,8 @@
     "@ton/ton": "^15.2.1",
     "tslog": "^4.9.3",
     "zod": "^3.24.2"
-  }
+  },
+  "files": [
+    "dist/**/*"
+  ]
 }
