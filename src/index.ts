@@ -1,4 +1,4 @@
-import { TonClient} from '@ton/ton';
+import { TonClient4} from '@ton/ton';
 
 import { TonService } from '@/services/ton-service';
 import { TonAdapter } from '@/adapters/ton';
@@ -12,7 +12,7 @@ async function main() {
 
     const endpoint = Bun.env.TON_API_ENDPOINT || 'https://testnet.toncenter.com/api/v2/jsonRPC';
     logger.info(`Using TON API endpoint: ${endpoint}`);
-    const tonAdapter = new TonAdapter(new TonClient({endpoint}));
+    const tonAdapter = new TonAdapter(new TonClient4({endpoint}));
     
     const tonService = new TonService(tonAdapter);
     const mcpAdapter = new McpAdapter(tonService);
