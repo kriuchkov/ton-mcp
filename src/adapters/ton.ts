@@ -1,7 +1,6 @@
-
 import type { TonPort } from '@/core/ports/outgoing';
-import type * as models from '@/core/models'; 
-import { TonClient4, Address, toNano,fromNano, WalletContractV4, internal, beginCell} from '@ton/ton';
+import type * as models from '@/core/models';
+import { TonClient4, Address, fromNano } from '@ton/ton';
 import logger from '@/logger';
 
 const log = logger.getSubLogger({ name: 'TonAdapter' });
@@ -18,13 +17,20 @@ export class TonAdapter implements TonPort {
     const seqno = last.last.seqno;
 
     log.debug('Seqno:', seqno, 'Address:', address);
-    let accountLite = await this.client.getAccount(seqno, Address.parse(address));
+    let accountLite = await this.client.getAccountLite(
+      seqno,
+      Address.parse(address)
+    );
     return {
       address,
-      balance: accountLite.account.balance,
-      status: accountLite.account.state.type === 'active' ? 'active' : 'inactive',
+      balance: {
+        coins: fromNano(accountLite.account.balance.coins),
+        currencies: accountLite.account.balance.currencies,
+      },
+      status:
+        accountLite.account.state.type === 'active' ? 'active' : 'inactive',
     };
-  } 
+  }
 
   async fetchTransactions(address: string): Promise<models.Transaction[]> {
     const last = await this.client.getLastBlock();
@@ -32,7 +38,11 @@ export class TonAdapter implements TonPort {
 
     const tonAddress = Address.parse(address);
     let account = await this.client.getAccount(seqno, Address.parse(address));
-    let transactions = await this.client.getAccountTransactions(tonAddress, BigInt(account.account.last!.lt), Buffer.from(account.account.last!.hash, 'base64'));
+    let transactions = await this.client.getAccountTransactions(
+      tonAddress,
+      BigInt(account.account.last!.lt),
+      Buffer.from(account.account.last!.hash, 'base64')
+    );
 
     let result: models.Transaction[] = [];
     for (const transaction of transactions) {
@@ -45,5 +55,5 @@ export class TonAdapter implements TonPort {
       });
     }
     return result;
-  }  
+  }
 }
