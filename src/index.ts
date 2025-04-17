@@ -10,13 +10,13 @@ async function main() {
   try {
     logger.info('starting TON MCP server on Bun...');
 
-    const endpoint = Bun.env.TON_API_ENDPOINT || 'https://testnet.toncenter.com/api/v2/jsonRPC';
+    const endpoint = Bun.env.TON_API_ENDPOINT || 'https://sandbox-v4.tonhubapi.com';
     logger.info(`Using TON API endpoint: ${endpoint}`);
     const tonAdapter = new TonAdapter(new TonClient4({endpoint}));
-    
+
     const tonService = new TonService(tonAdapter);
     const mcpAdapter = new McpAdapter(tonService);
-    
+
     mcpAdapter.setupResources();
     await mcpAdapter.start();
     logger.info('TON MCP server started successfully');
